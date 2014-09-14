@@ -94,7 +94,7 @@ and also via an internal network between them.\\
   \label{fig:networktopo}
 \end{figure}
 Figure~\ref{fig:networktopo} presents the network topology that we discussed. Each node whether a virtual or a physical
-entity has Quagga running on it and functions as a router. For practical reasons, we didn't add individual nodes
+entity has Quagga running on it and functions as a router. For practical reasons, we did nott add individual nodes
 but used our Router nodes for running basic connectivity and path measurements. We perform two experiments, and
 further capture the connectivity and path measurements using the \textit{ping} and \textit{traceroute} commands 
 available on standard Ubuntu distributions.
@@ -103,11 +103,11 @@ available on standard Ubuntu distributions.
 This section describes the configuration changes that were made to implement OSPF using Quagga.
 \footnote{We assume you have installed Quagga at this point. If you have not, look up \cite{quaggaubuntuinstall} \cite{quaggainstall} before proceeding.}
 \begin{enumerate}
-  \item Edit the 'daemons' file to specify that you will be needing Zebra and Ospf daemons running. \footnote{Zebra is default daemon that should always be run
+  \item Edit the `daemons' file to specify that you will be needing Zebra and Ospf daemons running. \footnote{Zebra is default daemon that should always be run
     irrespective of what routing software you employ}
-  \item Edit the 'zebra.conf' file, to specify about your network configuration.
-  \item Edit the 'ospfd.conf' file, to specify the configurations related to OSPF, the area configuration and the IP addresses of the individual networks.
-  \item Start Quagga in the CLI by typing in '\# /etc/init.d/quagga start' 
+  \item Edit the `zebra.conf' file, to specify about your network configuration.
+  \item Edit the `ospfd.conf' file, to specify the configurations related to OSPF, the area configuration and the IP addresses of the individual networks.
+  \item Start Quagga in the CLI by typing in \# `/etc/init.d/quagga start' 
     \footnote{In case Quagga is already running, you need to type restart, to stop the running daemon before starting it again}
     \footnote{This case assumes you have the OS setup as Ubuntu, in case of a different flavor of Linux, kindly consult the user-doc on how to run applications}
 \end{enumerate}
