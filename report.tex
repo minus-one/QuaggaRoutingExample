@@ -1,6 +1,7 @@
 \documentclass{article}
+\usepackage{graphicx}
+%\usepackage[comma, authoryear]{natbib}
 \begin{document}
-
 \begin{titlepage}
 \vspace*{\stretch{1.0}}
 \begin{center}
@@ -8,33 +9,69 @@
     \textit{by}\\
     \large\textit{Abhishek Balaji \\ Adithya K}
 \end{center}
+\vspace{2cm}
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=40mm]{Quagga.jpg}
+\end{figure}
+
 \vspace*{\stretch{2.0}}
 \end{titlepage}
 \tableofcontents
 \clearpage
 \section{Introduction}
 \pagenumbering{arabic}
-Network Routing refers to the action of an electronic network in transferring data from one part of the network to another in an
-efficient and an optimized way. The Network typically consists of a bunch of forwarding elements (Hardware) which perform the 
-actual transmission, receiving of data and a software sitting on top of them, which co-ordinate and take decisions on
-which next hardware element the piece of data should be given to. Quagga is one such software, a Network Routing Software.
-It runs on Unix-like systems (GNU/Linux, Solaris, FreeBSD, NetBSD). Quagga is a Software Suite, having implementations of the famous 
-routing protocols of the Internet viz. Routing Information Protocol (RIP), Open Shortest Path First (OSPF), Border Gateway Protocol (BGP)
-and also support for BABEL, OLSR (Wireless Mesh Routing Protocols).\\
-Talk about Zebra, history etc. here
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=10cm]{BasicRouter.jpg}
+  \caption{Basic representation of a Routing stack}
+  \label{fig:basicrouter}
+\end{figure}
+Network Routing refers to the action of an electronic network in transferring data 
+from one part of the network to another in an efficient and an optimized way. 
+The Network typically consists of a bunch of forwarding elements (Hardware) which 
+perform the actual transmission, receiving of data and a software sitting on top of them, 
+which co-ordinate and take decisions on which next hardware element the piece of data 
+should be given to. Figure~ \ref{fig:basicrouter} presents a basic structure 
+of a single routing element.\\
+\textbf{Quagga} is one such software, a Network Routing Software. It runs on \textit{Unix}-like systems 
+(GNU/Linux, Solaris, FreeBSD, NetBSD). Quagga is a Software Suite, having implementations 
+of the famous routing protocols of the Internet viz. \textbf{Routing Information Protocol (RIP), 
+Open Shortest Path First (OSPF), Border Gateway Protocol (BGP)} and also support for 
+BABEL, OLSR (Wireless Mesh Routing Protocols).\\
 
 \subsection{Architecture}
-Describe in detail the architecture of quagga, zebra, zserv API, the various daemons
+The Quagga architecture consists of a core daemon, \textit{zebra}, which acts as an abstraction 
+layer to the underlying Unix kernel and presents the \textbf{Zserv API} over a Unix or TCP stream 
+to Quagga clients. It is these Zserv clients which typically implement a routing protocol 
+and communicate routing updates to the zebra daemon.\cite{quaggaofficial}
+
 \subsection{Usecases}
 Mention specifically who currently use quagga and for what purpose.
 \clearpage
-\section{OSPF}
-Do we need this???
-\clearpage
+%\section{OSPF}
+%Do we need this???
+%\clearpage
 \section{Testbed Description}
-This section will describe our experiment, what we intend to do
+Our goal is to display the working of the Open-Shortest-Path-First protocol, how link-state information is displayed,
+how the routing table is built and how an alternate path is established in case of a link failure.
+We use, two physical machines each running 12.04 Ubuntu LTS, with Intel x86-64 bit architectures with
+32 GB of RAM. We run in each of these, two virtual machines which are directly connected to the host machine,
+and also via an internal network between them.
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=10cm]{QuaggaTopo.jpg}
+  \caption{Network Topology chosen for the experiments}
+  \label{fig:networktopo}
+\end{figure}
+Figure~\ref{fig:networktopo} presents the network topology that we discussed. Each node whether a virtual or a physical
+entity has Quagga running on it and functions as a router. For practical reasons, we didn't add individual nodes
+but used our Router nodes for running basic connectivity and path measurements. We perform two experiments, and
+further capture the connectivity and path measurements using the \textit{ping} and \textit{traceroute} commands 
+available on standard Ubuntu distributions.
 \subsection{Experiment 1}
-Set up of OSPF showing how the routing table is created
+In the first experiment, we simply start the Quagga routing software with a OSPF daemon on each of the nodes
+and verify the routing table generated.
 \subsection{Experiment 2}
 Tear down a link and display how packets are re-routed along with the new routing table
 \clearpage
@@ -46,4 +83,9 @@ This section will display the ping graphics and the traceroute graphics for both
 \section{Conclusions and Suggestions}
 This section needs to talk about what use-case we solved by using quagga and what we learnt using Quagga
 Also, if we have any feedback for this assignment we can give it here.
+%\bibliographystyle{plain}
+%\bibliography{abbr_long, ref_links}
+\begin{thebibliography}{9}
+  \bibitem{quaggaofficial}The official website of the quagga software provided by the GNU foundation http://www.nongnu.org/quagga/
+\end{thebibliography}
 \end{document}
