@@ -38,7 +38,11 @@ of a single routing element.\\
 (GNU/Linux, Solaris, FreeBSD, NetBSD). Quagga is a Software Suite, having implementations 
 of the famous routing protocols of the Internet viz. \textbf{Routing Information Protocol (RIP), 
 Open Shortest Path First (OSPF), Border Gateway Protocol (BGP)} and also support for 
-BABEL, OLSR (Wireless Mesh Routing Protocols).\\
+BABEL, OLSR (Wireless Mesh Routing Protocols). Quagga is a open-source-licenced (GPLv2) stack.\\
+Quagga had its origins in the Zebra project. Quagga was forked off Zebra in order to provide a
+more community based approach to it. Zebra currently in the form of ZebOS is currently being
+deployed by a company IP Infusion. \cite{zebraipinfusion}. Quagga is currently being maintained
+by NetDEF (\cite{netdef}) as a OpenSourceRouting project.
 
 \subsection{Architecture}
 The Quagga architecture consists of a core daemon, \textit{zebra}, which acts as an abstraction 
@@ -46,18 +50,27 @@ layer to the underlying Unix kernel and presents the \textbf{Zserv API} over a U
 to Quagga clients. It is these Zserv clients which typically implement a routing protocol 
 and communicate routing updates to the zebra daemon.\cite{quaggaofficial}
 
-\subsection{Usecases}
-Mention specifically who currently use quagga and for what purpose.
+\subsection{Usecases and Alternatives}
+As mentioned by a chief maintainer of the Quagga software here \cite{martininterview}, Quagga's
+primary use-case is for anybody who needs an open-source implementation of the routing protocols
+as a base for trying out new one. Quagga is used both in data centers and in the academic community. 
+Quagga also is seen as a software which is very useful and widely used, but rarely acknowledged by the corporate community.\\
+The main alternative for the Quagga routing software is the BIRD Internet Routing Daemon \cite{bird}.
+Developed from scratch as an academic project mainly for BGP route-reflector for Internet exchange points, 
+it is actively maintained and supported till date supporting multiple protocols including OSPF.
+
 \clearpage
 %\section{OSPF}
 %Do we need this???
 %\clearpage
 \section{Testbed Description}
-Our goal is to display the working of the Open-Shortest-Path-First protocol, how link-state information is displayed,
-how the routing table is built and how an alternate path is established in case of a link failure.
+Our goal is to display the working of a routing protocol using the Quagga software stack.
+We have chosen Open-Shortest-Path-First protocol as it is the most common routing protocol used
+within a particular Autonomous System. We propose to show how the routing tables are built, 
+how link-state information is utilized and how an alternate path is established in case of a link failure.\\
 We use, two physical machines each running 12.04 Ubuntu LTS, with Intel x86-64 bit architectures with
 32 GB of RAM. We run in each of these, two virtual machines which are directly connected to the host machine,
-and also via an internal network between them.
+and also via an internal network between them.\\
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=10cm]{QuaggaTopo.jpg}
@@ -81,11 +94,22 @@ This section will display the ping graphics and the traceroute graphics for both
 \subsection{Experiement 2}
 \clearpage
 \section{Conclusions and Suggestions}
-This section needs to talk about what use-case we solved by using quagga and what we learnt using Quagga
-Also, if we have any feedback for this assignment we can give it here.
+Quagga Routing software is able to demonstrate and prove that a simple machine running Linux can definitely
+be used as a custom-enterprise grade router. Also, after evolving from the Zebra software, it provides an
+easy mechanism for any new protocol to be built on top of it. Sadly, it could never really continue and
+be a market changer, because, Network component manufacturers (viz. Cisco, Juniper) built their own software
+stacks for tighter integration with their hardware systems. But today, Networking in general has evolved, and
+market is moving in the direction of dividing the routing software (control plane) with the forwarding
+component (Data plane). Quagga has adjusted to this and provides support for this. What remains to be seen
+is whether the new players entering the market are willing to adopt a proven open, enterprise-grade 
+alternative to a purely proprietary version.
 %\bibliographystyle{plain}
 %\bibliography{abbr_long, ref_links}
 \begin{thebibliography}{9}
   \bibitem{quaggaofficial}The official website of the quagga software provided by the GNU foundation http://www.nongnu.org/quagga/
+  \bibitem{zebraipinfusion}GNU Zebra project implemented as ZebOS at IP Infusion http://en.wikipedia.org/wiki/GNU\textunderscore Zebra
+  \bibitem{netdef} Network Device Education Foundation, Non-profit company http://www.netdef.org/
+  \bibitem{martininterview} Quagga: A Success, and Yet a Failure, of Open-Source In Networking? Interview with Martin Winter,NetDEF https://www.sdncentral.com/education/quagga-project-martin-winter-interview/2014/02/
+  \bibitem{bird} BIRD Internet Routing Daemon http://bird.network.cz/
 \end{thebibliography}
 \end{document}
