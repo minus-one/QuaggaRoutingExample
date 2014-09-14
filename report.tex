@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage{graphicx}
+\usepackage{listings}
 %\usepackage[comma, authoryear]{natbib}
 \begin{document}
 \begin{titlepage}
@@ -67,7 +68,7 @@ with the Zebra daemon over a TCP stream. A custom routing protocol may also be w
 Zebra daemon using the ZServ API \cite{zservdocs}.
 
 \subsection{Usecases and Alternatives}
-As mentioned by a chief maintainer of the Quagga software here \cite{martininterview}, Quagga's
+As mentioned by a chief maintainer of the Quagga software \cite{martininterview}, Quagga's
 primary use-case is for anybody who needs an open-source implementation of the routing protocols
 as a base for trying out new one. Quagga is used both in data centers and in the academic community. 
 Quagga also is seen as a software which is very useful and widely used, but rarely acknowledged by the corporate community.\\
@@ -81,8 +82,8 @@ it is actively maintained and supported till date supporting multiple protocols 
 %\clearpage
 \section{Testbed Description}
 Our goal is to display the working of a routing protocol using the Quagga software stack.
-We have chosen Open-Shortest-Path-First protocol as it is the most common routing protocol used
-within a particular Autonomous System. We propose to show how the routing tables are built, 
+We have chosen Open-Shortest-Path-First protocol as it is the most common routing protocol
+within an Autonomous System. We propose to show how the routing tables are built, 
 how link-state information is utilized and how an alternate path is established in case of a link failure.\\
 We use, two physical machines each running 12.04 Ubuntu LTS, with Intel x86-64 bit architectures with
 32 GB of RAM. We run in each of these, two virtual machines which are directly connected to the host machine,
@@ -93,24 +94,42 @@ and also via an internal network between them.\\
   \caption{Network Topology chosen for the experiments}
   \label{fig:networktopo}
 \end{figure}
-Figure~\ref{fig:networktopo} presents the network topology that we discussed. Each node whether a virtual or a physical
-entity has Quagga running on it and functions as a router. For practical reasons, we did nott add individual nodes
+Figure~\ref{fig:networktopo} presents the network topology that was chosen. Every node (virtual or a physical
+entity) has Quagga running on it and functions as a router. For practical reasons, we did not add individual nodes
 but used our Router nodes for running basic connectivity and path measurements. We perform two experiments, and
 further capture the connectivity and path measurements using the \textit{ping} and \textit{traceroute} commands 
 available on standard Ubuntu distributions.
 \subsection{Quagga Setup}
 \label{sec:quaggasetup}
 This section describes the configuration changes that were made to implement OSPF using Quagga.
-\footnote{We assume you have installed Quagga at this point. If you have not, look up \cite{quaggaubuntuinstall} \cite{quaggainstall} before proceeding.}
+The first step before proceeding is to install Quagga. We used the standard Ubuntu repositories to install Quagga similar to \cite{quaggaubuntuinstall}.
+If you use a different Linux distribution or would like to install Quagga from source, follow \cite{quaggainstall}.\\
+Now, that we have installed Quagga, the next step is to make sure it is configured in a correct way.
+We need to specify to Quagga, the various routing protocol daemons that we need running, and 
+then specify the configurations for those protocols. Configurations are to be described in separate configuration
+files for individual routing protocols. These configurations are typically specified  in the `/etc/quagga' folder 
+\footnote{May vary if you build from source and specify different installation paths}\\
+
+The steps that we performed are captured below.
 \begin{enumerate}
-  \item Edit the `daemons' file to specify that you will be needing Zebra and Ospf daemons running. \footnote{Zebra is default daemon that should always be run
-    irrespective of what routing software you employ}
-  \item Edit the `zebra.conf' file, to specify about your network configuration.
-  \item Edit the `ospfd.conf' file, to specify the configurations related to OSPF, the area configuration and the IP addresses of the individual networks.
+  \item Create/Edit the `daemons' file to specify that you will be needing Zebra 
+    and Ospf daemons running. \footnote{Zebra is default daemon that should always 
+      be run irrespective of what routing software you employ}
+  \item Create/Edit the `zebra.conf' file, to specify about your network configuration.
+    This will contain the network interfaces (eth1, eth2 etc.) that your router has,
+    the IP addresses assigned on those interfaces (ipv4/ipv6 addressing).
+    See Appendix Section \ref{sec:appendix} for a sample file.
+  \item Create/Edit the `ospfd.conf' file, to specify the configurations related to OSPF, 
+    the area configuration and the IP addresses of the individual networks.
+    See Appendix Section \ref{sec:appendix} for a sample file.
   \item Start Quagga in the CLI by typing in \# `/etc/init.d/quagga start' 
     \footnote{In case Quagga is already running, you need to type restart, to stop the running daemon before starting it again}
     \footnote{This case assumes you have the OS setup as Ubuntu, in case of a different flavor of Linux, kindly consult the user-doc on how to run applications}
+  \item Verify Quagga is running by checking the process tree. We use the \#`ps aux|grep quagga' command.
+    In our case, it shows two daemons running, the Zebra daemon and the OSPF daemon. Each routing protocol has its own seperate daemon process spawned.
 \end{enumerate}
+
+Now, we have seen how to start a specific routing protocol in Quagga. In the next section we will see how OSPF is running within Quagga and verify it.
 %\subsection{Experiment 1}
 %In the first experiment, we simply start the Quagga routing software with a OSPF daemon on each of the nodes
 %and verify the routing table generated.
@@ -121,11 +140,50 @@ This section describes the configuration changes that were made to implement OSP
 We conduct two experiments, capture the connectivity and path metrics and also show the routing table generated.
 The first experiment presents a stable state, after simply starting the Quagga routing software suite on all the routers as described in
 Fig \ref{fig:networktopo} (See Section \ref{sec:quaggasetup} to see the setup)
-We show the routing table generated, the ping and traceroute results from two distinct nodes in the network.
+We show the routing table generated, the ping and traceroute results from two distinct nodes in the network.\\
 In Experiment 2, we remove the link between two nodes which is used in the routing table, and show how the network re-routes traffic 
 after routing protocol adds an alternate path.
+
 \subsection{Experiment 1}
+As described before, experiment 1 will describe the steady state routing table and we will verify the path
+computation.
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=13cm]{results/exp1-quagga-rt.png}
+  \caption{Routing Table via Quagga CLI}
+  \label{fig:exp1-quagga-rt}
+\end{figure}
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=13cm]{results/exp1-vbox-ping_tr.png}
+  \caption{Routing Table via Quagga CLI}
+  \label{fig:exp1-vbox-ping_tr}
+\end{figure}
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=13cm]{results/exp1-vboxab-rt.png}
+  \caption{Routing Table via Quagga CLI}
+  \label{fig:exp1-vboxab-rt}
+\end{figure}
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=13cm]{results/exp1-vboxab-tr.png}
+  \caption{Routing Table via Quagga CLI}
+  \label{fig:exp1-vboxab-tr}
+\end{figure}
+
 \subsection{Experiement 2}
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=13cm]{results/exp2-vbox-ping_tr.png}
+  \caption{Routing Table via Quagga CLI}
+  \label{fig:exp2-vbox-ping_tr}
+\end{figure}
+
 \clearpage
 \section{Conclusions and Suggestions}
 Quagga Routing software is able to demonstrate and prove that a simple machine running Linux can definitely
@@ -137,8 +195,14 @@ market is moving in the direction of dividing the routing software (control plan
 component (Data plane). Quagga has adjusted to this and provides support for this. What remains to be seen
 is whether the new players entering the market are willing to adopt a proven open, enterprise-grade 
 alternative to a purely proprietary version.
+\clearpage
 %\bibliographystyle{plain}
 %\bibliography{abbr_long, ref_links}
+\section{Appendix}
+\label{sec:appendix}
+\lstinputlisting{zebra.conf}
+\lstinputlisting{ospfd.conf}
+\clearpage
 \begin{thebibliography}{9}
   \bibitem{quaggaofficial}The official website of the quagga software provided by the GNU foundation http://www.nongnu.org/quagga/
   \bibitem{zebraipinfusion}GNU Zebra project implemented as ZebOS at IP Infusion http://en.wikipedia.org/wiki/GNU\textunderscore Zebra
