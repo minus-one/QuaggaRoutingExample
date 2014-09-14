@@ -42,7 +42,7 @@ BABEL, OLSR (Wireless Mesh Routing Protocols). Quagga is a open-source-licenced 
 Quagga had its origins in the Zebra project. Quagga was forked off Zebra in order to provide a
 more community based approach to it. Zebra currently in the form of ZebOS is currently being
 deployed by a company IP Infusion. \cite{zebraipinfusion}. Quagga is currently being maintained
-by NetDEF (\cite{netdef}) as a OpenSourceRouting project.
+by NetDEF \cite{netdef} as a OpenSourceRouting project.
 
 \subsection{Architecture}
 The Quagga architecture consists of a core daemon, \textit{zebra}, which acts as an abstraction 
@@ -82,14 +82,32 @@ entity has Quagga running on it and functions as a router. For practical reasons
 but used our Router nodes for running basic connectivity and path measurements. We perform two experiments, and
 further capture the connectivity and path measurements using the \textit{ping} and \textit{traceroute} commands 
 available on standard Ubuntu distributions.
-\subsection{Experiment 1}
-In the first experiment, we simply start the Quagga routing software with a OSPF daemon on each of the nodes
-and verify the routing table generated.
-\subsection{Experiment 2}
-Tear down a link and display how packets are re-routed along with the new routing table
+\subsection{Quagga Setup}
+\label{sec:quaggasetup}
+This section describes the configuration changes that were made to implement OSPF using Quagga.
+\footnote{We assume you have installed Quagga at this point. If you have not, look up \cite{quaggaubuntuinstall} \cite{quaggainstall} before proceeding.}
+\begin{enumerate}
+  \item Edit the 'daemons' file to specify that you will be needing Zebra and Ospf daemons running. \footnote{Zebra is default daemon that should always be run
+    irrespective of what routing software you employ}
+  \item Edit the 'zebra.conf' file, to specify about your network configuration.
+  \item Edit the 'ospfd.conf' file, to specify the configurations related to OSPF, the area configuration and the IP addresses of the individual networks.
+  \item Start Quagga in the CLI by typing in '\# /etc/init.d/quagga start' 
+    \footnote{In case Quagga is already running, you need to type restart, to stop the running daemon before starting it again}
+    \footnote{This case assumes you have the OS setup as Ubuntu, in case of a different flavor of Linux, kindly consult the user-doc on how to run applications}
+\end{enumerate}
+%\subsection{Experiment 1}
+%In the first experiment, we simply start the Quagga routing software with a OSPF daemon on each of the nodes
+%and verify the routing table generated.
+%\subsection{Experiment 2}
+%Tear down a link and display how packets are re-routed along with the new routing table
 \clearpage
 \section{Performance Measurement Results}
-This section will display the ping graphics and the traceroute graphics for both experiment 1 and experiment 2
+We conduct two experiments, capture the connectivity and path metrics and also show the routing table generated.
+The first experiment presents a stable state, after simply starting the Quagga routing software suite on all the routers as described in
+Fig \ref{fig:networktopo} (See Section \ref{sec:quaggasetup} to see the setup)
+We show the routing table generated, the ping and traceroute results from two distinct nodes in the network.
+In Experiment 2, we remove the link between two nodes which is used in the routing table, and show how the network re-routes traffic 
+after routing protocol adds an alternate path.
 \subsection{Experiment 1}
 \subsection{Experiement 2}
 \clearpage
@@ -111,5 +129,7 @@ alternative to a purely proprietary version.
   \bibitem{netdef} Network Device Education Foundation, Non-profit company http://www.netdef.org/
   \bibitem{martininterview} Quagga: A Success, and Yet a Failure, of Open-Source In Networking? Interview with Martin Winter,NetDEF https://www.sdncentral.com/education/quagga-project-martin-winter-interview/2014/02/
   \bibitem{bird} BIRD Internet Routing Daemon http://bird.network.cz/
+  \bibitem{quaggaubuntuinstall} Installing Quagga in Ubuntu https://wiki.ubuntu.com/JonathanFerguson/Quagga
+  \bibitem{quaggainstall} Official guide to build and install Quagga http://www.nongnu.org/quagga/docs/docs-info.html\#Installation
 \end{thebibliography}
 \end{document}
