@@ -5,7 +5,8 @@
 \begin{titlepage}
 \vspace*{\stretch{1.0}}
 \begin{center}
-    \Large\textbf{Routing using Quagga: An example with OSPF}\\
+    \Large\textbf{Routing using Quagga: An example with OSPF`}\\
+    A technical report\\
     \textit{by}\\
     \large\textit{Abhishek Balaji \\ Adithya K}
 \end{center}
@@ -48,7 +49,22 @@ by NetDEF \cite{netdef} as a OpenSourceRouting project.
 The Quagga architecture consists of a core daemon, \textit{zebra}, which acts as an abstraction 
 layer to the underlying Unix kernel and presents the \textbf{Zserv API} over a Unix or TCP stream 
 to Quagga clients. It is these Zserv clients which typically implement a routing protocol 
-and communicate routing updates to the zebra daemon.\cite{quaggaofficial}
+and communicate routing updates to the zebra daemon.\cite{quaggaofficial} \\
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=10cm]{QuaggaArchitecture.jpg}
+  \caption{Architecture of Quagga Software Stack}
+  \label{fig:quaggaarchitecture}
+\end{figure}
+Referring Figure~ \ref{fig:quaggaarchitecture}, we can see that Zebra is an IP routing manager. 
+It provides kernel routing table updates, interface lookups, and redistribution of routes between 
+different routing protocols. Zebra acts as a dedicated server. It exchanges routing information with 
+other routers using routing protocols and updates the kernel’s routing table based on the information exchanged.
+Zebra daemon is the core of quagga that manage the interaction of kernel routing table and the daemons for 
+individual routing protocols. Each daemon has its own config file in /etc/quagga directory and their own 
+virtual terminal interface or vty. As mentioned before, the individual routing protocol daemons communicate 
+with the Zebra daemon over a TCP stream. A custom routing protocol may also be written to interface with the
+Zebra daemon using the ZServ API \cite{zservdocs}.
 
 \subsection{Usecases and Alternatives}
 As mentioned by a chief maintainer of the Quagga software here \cite{martininterview}, Quagga's
@@ -131,5 +147,6 @@ alternative to a purely proprietary version.
   \bibitem{bird} BIRD Internet Routing Daemon http://bird.network.cz/
   \bibitem{quaggaubuntuinstall} Installing Quagga in Ubuntu https://wiki.ubuntu.com/JonathanFerguson/Quagga
   \bibitem{quaggainstall} Official guide to build and install Quagga http://www.nongnu.org/quagga/docs/docs-info.html\#Installation
+  \bibitem{zservdocs} Zebra protocol, packet format and ZServ APIs http://www.nongnu.org/quagga/docs/docs-info.html\#Zebra-Protocol
 \end{thebibliography}
 \end{document}
