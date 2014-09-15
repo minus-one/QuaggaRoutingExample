@@ -9,7 +9,7 @@
     \Large\textbf{Routing using Quagga: An example with OSPF`}\\
     A technical report\\
     \textit{by}\\
-    \large\textit{Abhishek Balaji \\ Adithya K}
+    \large\textit{Adithya K \\ Abhishek Balaji}
 \end{center}
 \vspace{2cm}
 \begin{figure}[ht!]
@@ -150,7 +150,7 @@ computation.\\
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=13cm]{results/exp1-quagga-rt.png}
-  \caption{Routing Table via Quagga CLI}
+  \caption{Routing Table via Quagga CLI at Node 3}
   \label{fig:exp1-quagga-rt}
 \end{figure}
 Figure~ \ref{fig:exp1-quagga-rt} shows the routing table at Node 3. (See Figure~ \ref{fig:networktopo} for the topology).
@@ -163,25 +163,25 @@ next hop is correctly identified as eth1, which is the direct link to Node 4.\\
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=11cm]{results/exp1-vbox-ping_tr.png}
-  \caption{Ping and Traceroute results from host to}
+  \caption{Ping and Traceroute results from Node 1 to Node 6}
   \label{fig:exp1-vbox-ping_tr}
 \end{figure}
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=11cm]{results/exp1-vboxab-rt.png}
-  \caption{Routing Table on host}
+  \caption{Routing Table on Node 6}
   \label{fig:exp1-vboxab-rt}
 \end{figure}
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=11cm]{results/exp1-vboxab-tr.png}
-  \caption{Traceroute results from host to }
+  \caption{Traceroute results from Node 6 to Node 3}
   \label{fig:exp1-vboxab-tr}
 \end{figure}
 This can further be verified by doing a ping and traceroute from Node 1 to Node 6. 
 Figure~ \ref{fig:exp1-vbox-ping_tr} shows the ping statistics and the traceroute path. The traceroute 
 path goes as follows: Node 1 -\textgreater Node 3 -\textgreater  Node 4 -\textgreater  Node 6.\\
-Now, we shall look at a return path from Node 6 to Node 1.\\
+Now, we shall look at a return path from Node 6 to Node 3.\\
 Figure~ \ref{fig:exp1-vboxab-rt} shows the routing table on Node 6 and the ping result to Node 3,
 while Figure~ \ref{fig:exp1-vboxab-tr} traces the path to Node 3.
 
@@ -190,7 +190,7 @@ In the next experiment, we shall look at how OSPF reacts to a link failure.\\
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=13cm]{results/exp2-vbox-ping_tr.png}
-  \caption{Ping and Traceroute from host to after OSPF has an alternate path established}
+  \caption{Ping and Traceroute from Node 1 to Node 5 after OSPF has an alternate path established}
   \label{fig:exp2-vbox-ping_tr}
 \end{figure}
 We break down two links, which are expected to be used as the default path as derived by OSPF.
